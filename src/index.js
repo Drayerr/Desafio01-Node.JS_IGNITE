@@ -101,7 +101,7 @@ app.patch('/todos/:id/done', checksExistsUserAccount, (request, response) => {
   if (todo) {
     todo.done = true
 
-    return response.status(200)
+    return response.status(200).json(todo)
 
   } else {
     return response.status(404).json({ error: "To-do not found!" })
@@ -117,15 +117,12 @@ app.delete('/todos/:id', checksExistsUserAccount, (request, response) => {
 
   if (todoIndex === -1) {
 
-    return response.status(404).json({ msg: "Error! task ID not found!" })
+    return response.status(404).json({ error: "Error! task ID not found!" })
 
-  } else {
-    const todos = user.todos
-
-    todos.splice(todoIndex, 1)
-
-    return response.status(204).json()
   }
+    user.todos.splice(todoIndex, 1)
+    
+    return response.status(204).json()
 });
 
 module.exports = app;
